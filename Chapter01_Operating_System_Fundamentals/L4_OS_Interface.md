@@ -49,58 +49,59 @@
 <a id="id3"></a>
 ## ✅ 知识点3: 用户使用计算机的方式
 
-**出了命令，还有什么交互形式？**
+**除了命令，还有什么交互形式？**
 - 用户如何使用计算机？通过**程序(Program)**（应用软件）
 - 三种主要交互方式：
   1. **`命令行(Command Line)`**：命令程序
   2. **`图形界面(Graphical User Interface, GUI)`**：消息框架程序 + 消息处理程序
   3. **`应用程序(Application)`**：直接调用系统功能
+> ⚠️ **关键区分**：无论是命令行还是图形界面，本质上都是**程序**
 
-**注意点**
-- ⚠️ **关键区分**：无论是命令行还是图形界面，本质上都是**程序**
-- 💡 **理解技巧**：命令行和图形界面只是"外壳(Shell)"的不同表现形式
-- 🔄 **知识关联**：操作系统启动后加载的 shell 决定了用户的交互方式
 
 ---
 
 <a id="id4"></a>
 ## ✅ 知识点4: 命令行的本质
 
-**理论**
+**先从命令行看看具体什么是系统接口**
 - **命令(Command)** 是什么？**一段程序而已**
-- 示例：C语言编写的 echo 程序
-```c
-#include <stdio.h>
-int main(int argc, char * argv[]) {
-    printf("ECHO:%s\n", argv[1]);
-}
-```
+  - 示例：C语言编写的 echo 程序
+  ```c
+  #include <stdio.h>
+  int main(int argc, char * argv[]) {
+      printf("ECHO:%s\n", argv[1]);
+  }
+  ```
 - 编译运行：
-```bash
-gcc -o output output.c
-./output "hello"
-```
+  ```bash
+  gcc -o output output.c
+  ./output "hello"
+  ```
 - **Shell** 也是一段程序：`/bin/sh`
 - Shell 的核心逻辑（简化版）：
-```c
-int main(int argc, char * argv[]) {
-    char cmd[20];
-    while(1) {
-        scanf("%s", cmd);
-        if(!fork()) {    // 创建子进程
-            exec(cmd);    // 执行命令
-        } else {
-            wait();       // 父进程等待
-        }
-    }
-}
-```
+  ```c
+  int main(int argc, char * argv[]) {
+      char cmd[20];
+      while(1) {
+          scanf("%s", cmd);
+          if(!fork()) {    // 创建子进程
+              exec(cmd);    // 执行命令
+          } else {
+              wait();       // 父进程等待
+          }
+      }
+  }
+  ```
+  - **核心任务：循环读取用户输入的命令，通过 `fork` 创建子进程执行命令，父进程`wait()`等待子进程结束后再读取下一条命令。**
+- **完整的运行一遍`shell`+`output`**：
+  1. 当系统启动的最后，shell程序被执行并等待用户输入
+  2. 当用户输入`./output "hello"`后，shell通过`if(!fork()){exec(cmd);}`这段代码去申请CPU
+  3. 并让CPU去执行`output`的代码并最终打印出想要的结果。
+- 过程中，通过调用`scanf()`,`fork()`等实现对计算机硬件的使用
 
-**注意点**
-- ⚠️ **关键区分**：命令不是直接操作系统的"指令"，而是**由shell程序解析并执行的程序**
-- 💡 **理解技巧**：`fork()` 创建子进程，`exec()` 替换进程映像执行新程序，`wait()` 等待子进程结束——这是命令执行的**三件套**
-- 🔄 **知识关联**：`fork()`/`exec()`/`wait()` 是 POSIX 标准的核心系统调用
-- 📋 **术语提醒**：Shell`命令解释器`——用户与操作系统之间的命令行接口
+> ⚠️ **关键区分**：命令不是直接操作系统的"指令"，而是**由shell程序解析并执行的程序**
+> 📋 **术语提醒**：Shell`命令解释器`——用户与操作系统之间的命令行接口
+
 
 ---
 
