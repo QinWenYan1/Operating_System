@@ -22,7 +22,7 @@
   - 操作系统历史发展
   - 中断与异常处理
 
-#### [第2章 进程与线程](./Chapter02_Processes_and_Threads/README.md)
+#### [第2章 进程与线程](./Chapter02_Process_Thread/README.md)
 - **关键词**：
   - 进程概念与状态转换
   - 进程控制块 (PCB)
