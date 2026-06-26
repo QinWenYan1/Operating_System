@@ -97,7 +97,7 @@
   - 面包店算法(Bakery Algorithm)中 `choosing` 数组的必要性
   - 为什么 `TestAndSet` 的 `while` 循环是忙等待(Busy Waiting)
 
-### 2.11 [信号量的代码实现 (Coding Semaphore)](./2.11_coding_semaphore.md)
+### 2.11 [信号量的代码实现 (Coding Semaphore)](./2.11_Coding_Semaphore.md)
 - **核心**：
   - `semtable` 数据结构：内核中的全局信号量表
   - `sys_sem_wait` / `sys_sem_post` 系统调用的 `cli/sti` 原子保护
